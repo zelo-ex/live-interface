@@ -1,4 +1,5 @@
 # live-interface
+A simple live interface used in OBS live streaming.
 
 ## Background
 Used as an OBS live streaming interface while pracitcing Python.
