@@ -11,3 +11,4 @@ wheels/
 
 # private file
 .env
+private-notes/
