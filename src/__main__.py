@@ -1,8 +1,8 @@
-import music_player
-
+from gui.display import GUIDisplay
 
 def main():
-    print(music_player.musicConfigParser())
+    gui = GUIDisplay()
+    gui.run()
 
 
 if __name__ == "__main__":

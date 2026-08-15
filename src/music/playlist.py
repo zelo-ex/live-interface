@@ -1,27 +1,40 @@
-import json
-import os
 import random
+import json
 from typing import Tuple
+import os
 from dotenv import load_dotenv
 from pathlib import Path
 
-class MusicPlayer:
+class playlist:
     _playlist_index = []
     _playlist_ptr = 0
     # range: 0~len(self._playlist_config)
     _playlist_config = []
 
-    def __init__(self, file_path: str):
-        MusicPlayer.load_config(self, file_path)
+    def __init__(self):
+        playlist.load_config(self, self.parse_config_path())
         self._playlist_index = [i for i in range(len(self._playlist_config))]
         random.shuffle(self._playlist_index)
 
         print("Init player: ")
-        now_playlist = MusicPlayer.now_playlist(self)
+        now_playlist = playlist.now_playlist(self)
         print(f"playlist have {now_playlist[1]} music.")
-        now_song = MusicPlayer.now_song(self)
+        now_song = playlist.now_song(self)
         print(f"now play [{now_playlist[0]}, {now_song[1]}]: {now_song[0]}")
         return
+
+    def parse_config_path(self) -> str:
+        load_dotenv()
+        music_path = os.getenv("MUSIC_PATH")
+        music_file = os.getenv("MUSIC_FILE")
+        if music_path is None or music_file is None:
+            print("Env error: lose MUSIC_PATH or MUSIC_FILE")
+            exit(0)
+        assert music_path is not None
+        assert music_file is not None
+        path = Path(music_path) / music_file
+        abs_path = path.absolute()
+        return str(abs_path)
 
     def load_config(self, file_path: str):
         try:
@@ -42,24 +55,7 @@ class MusicPlayer:
     def move(self, offset: int):
         self._playlist_ptr += offset
         self._playlist_ptr %= len(self._playlist_config)
-        now_playlist = MusicPlayer.now_playlist(self)
-        now_song = MusicPlayer.now_song(self)
+        now_playlist = playlist.now_playlist(self)
+        now_song = playlist.now_song(self)
         print(f"now play [{now_playlist[0]}, {now_song[1]}]: {now_song[0]}")
         return
-
-def main():
-    load_dotenv()
-    music_path = os.getenv("MUSIC_PATH")
-    music_file = os.getenv("MUSIC_FILE")
-    if music_path is None or music_file is None:
-        print("Env error: lose MUSIC_PATH or MUSIC_FILE")
-    assert music_path is not None
-    assert music_file is not None
-    path = Path(music_path) / music_file
-    abs_path = path.absolute()
-    mp = MusicPlayer(str(abs_path))
-    mp.move(-1)
-
-
-if __name__ == "__main__":
-    main()
