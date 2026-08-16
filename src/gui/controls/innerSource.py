@@ -24,7 +24,8 @@ class status_bar(QStatusBar):
         
 
 class music_source:
-    def __init__(self, preview_size: QSize, screen_scale: float):
+    def __init__(self, preview_size: QSize,
+                 screen_scale: float):
         self.playlist = playlist()
         now_song = self.playlist.now_song()[0]
         
@@ -54,8 +55,8 @@ class music_source:
 
 
 class notice_source:
-    def __init__(self, preview_size: QSize, screen_scale: float,
-                 notices: str):
+    def __init__(self, preview_size: QSize,
+                 screen_scale: float, notices: str):
         notice_label = QLabel(notices)
         notice_label.setFixedSize(
             math.ceil(preview_size.width() / 2),
@@ -63,20 +64,26 @@ class notice_source:
                       screen_scale * float(preview_size.height()))
         )
         self.widget = notice_label
+        self.widget.setStyleSheet("background: #1f1f1f;")
         
         
 """内部源层（公告、音乐等）"""
 class inner_source:
     def __init__(self, preview_size: QSize,
                  screen_scale: float):
-        music_control = music_source(preview_size, screen_scale)
-        notice_control = notice_source(preview_size, screen_scale,
-                                       "Notice\r\nThis is a notice...")
+        music_control = music_source(
+            preview_size, screen_scale)
+        notice_control = notice_source(
+            preview_size, screen_scale,
+            "Notice\r\nThis is a notice...")
 
         self.layout = QHBoxLayout()
         self.layout.addWidget(music_control.widget)
         self.layout.addWidget(notice_control.widget)
         self.layout.setAlignment(
-            notice_control.widget,
-            Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop
+            music_control.widget, Qt.AlignmentFlag.AlignBottom
         )
+        self.layout.setAlignment(
+            notice_control.widget, Qt.AlignmentFlag.AlignBottom
+        )
+        

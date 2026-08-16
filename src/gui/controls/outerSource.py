@@ -1,11 +1,12 @@
 import math
 from PySide6.QtCore import (Qt, QSize)
-from PySide6.QtWidgets import (QLabel,QHBoxLayout, QListWidget)
+from PySide6.QtWidgets import (QLabel, QHBoxLayout, QListWidget)
 from PySide6.QtGui import QFont
 
 """外部源层（OBS截流、弹幕拉取等）"""
 class outer_source:
-    def __init__(self, preview_size: QSize, screen_scale: float):
+    def __init__(self, preview_size: QSize,
+                 screen_scale: float):
         preview = QLabel("Screen Video Stream Closed")
         preview.setStyleSheet("background: #2f2f2f;")
         preview.setFixedSize(

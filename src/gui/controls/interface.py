@@ -14,12 +14,12 @@ class interface:
         
         load_dotenv()
         screen_scale = float(os.getenv("SCREEN_SCALE", default="1.0"))
-        source_height = primary_screen_size.height() - 30
+        preview_height = screen.size().height() - 48
         preview_size = QSize(int(
             float(primary_screen_size.width()) *
-            source_height /
+            preview_height /
             primary_screen_size.height()),
-            source_height
+            preview_height
         )
 
         title_cls = header(screen)
@@ -34,6 +34,8 @@ class interface:
         main_layout.addLayout(title_cls.layout)
         main_layout.addLayout(outer_source_cls.layout)
         main_layout.addLayout(inner_source_cls.layout)
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setSpacing(0)
         
         self.widget = QWidget()
         self.widget.setLayout(main_layout)
