@@ -24,7 +24,7 @@ class status_bar(QStatusBar):
         
 
 class music_source:
-    def __init__(self):
+    def __init__(self, preview_size: QSize, screen_scale: float):
         self.playlist = playlist()
         now_song = self.playlist.now_song()[0]
         
@@ -46,15 +46,21 @@ class music_source:
         self.widget = QWidget()
         self.widget.setLayout(layout)
         self.widget.setStyleSheet("background: #1f1f1f;")
+        self.widget.setFixedSize(
+            math.ceil(preview_size.width() / 2),
+            math.ceil(preview_size.height() -
+                      screen_scale * float(preview_size.height()))
+        )
 
 
 class notice_source:
-    def __init__(self, preview_size: QSize,
-                 screen_scale: float,
+    def __init__(self, preview_size: QSize, screen_scale: float,
                  notices: str):
         notice_label = QLabel(notices)
-        notice_label.setFixedWidth(
-            math.ceil(screen_scale * float(preview_size.width()))
+        notice_label.setFixedSize(
+            math.ceil(preview_size.width() / 2),
+            math.ceil(preview_size.height() -
+                      screen_scale * float(preview_size.height()))
         )
         self.widget = notice_label
         
@@ -62,8 +68,8 @@ class notice_source:
 """内部源层（公告、音乐等）"""
 class inner_source:
     def __init__(self, preview_size: QSize,
-                          screen_scale: float):
-        music_control = music_source()
+                 screen_scale: float):
+        music_control = music_source(preview_size, screen_scale)
         notice_control = notice_source(preview_size, screen_scale,
                                        "Notice\r\nThis is a notice...")
 

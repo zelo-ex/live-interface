@@ -11,20 +11,20 @@ from PySide6.QtGui import (QGuiApplication, QScreen)
 class interface:
     def __init__(self, screen: QScreen):
         primary_screen_size = QGuiApplication.primaryScreen().size()
-        source_size = screen.size()
-        source_size.setHeight(source_size.height() - 30)
+        
         load_dotenv()
         screen_scale = float(os.getenv("SCREEN_SCALE", default="1.0"))
+        source_height = primary_screen_size.height() - 30
         preview_size = QSize(int(
             float(primary_screen_size.width()) *
-            source_size.height() /
+            source_height /
             primary_screen_size.height()),
-            source_size.height()
+            source_height
         )
 
         title_cls = header(screen)
         outer_source_cls = outer_source(
-            preview_size, source_size, screen_scale
+            preview_size, screen_scale
         )
         inner_source_cls = inner_source(
             preview_size, screen_scale

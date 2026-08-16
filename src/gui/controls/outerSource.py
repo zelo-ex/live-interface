@@ -5,8 +5,7 @@ from PySide6.QtGui import QFont
 
 """外部源层（OBS截流、弹幕拉取等）"""
 class outer_source:
-    def __init__(self, preview_size: QSize,
-                          source_size: QSize, screen_scale: float):
+    def __init__(self, preview_size: QSize, screen_scale: float):
         preview = QLabel("Screen Video Stream Closed")
         preview.setStyleSheet("background: #2f2f2f;")
         preview.setFixedSize(
@@ -20,8 +19,10 @@ class outer_source:
         
         danmaku_list = QListWidget()
         danmaku_list.setStyleSheet("background: #7f7f7f;")
-        danmaku_list.setFixedHeight(
-            math.ceil(screen_scale * float(source_size.height()))
+        danmaku_list.setFixedSize(
+            math.ceil(preview_size.width() -
+                      screen_scale * float(preview_size.width())),
+            math.ceil(screen_scale * float(preview_size.height()))
         )
         
         self.layout = QHBoxLayout()
