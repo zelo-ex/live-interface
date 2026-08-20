@@ -1,11 +1,11 @@
 import os
-from gui.controls.interface import interface
+from .controls.interface import interface
+from .screens import screens
 os.environ["QT_QPA_PLATFORM"] = "xcb"
 
 import sys
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import (QApplication, QMainWindow)
-from PySide6.QtGui import (QGuiApplication)
+from PySide6.QtWidgets import QApplication, QMainWindow
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -17,23 +17,13 @@ class MainWindow(QMainWindow):
 class GUIDisplay:
     def __init__(self):
         self.app = QApplication(sys.argv)
-        screens = QApplication.screens()
-
-        non_primary = []
-        primary_screen = QGuiApplication.primaryScreen()
-        for s in screens:
-            if s.serialNumber != primary_screen.serialNumber:
-                non_primary.append(s)
-        
-        # if non_primary:
-        #     self.screen = non_primary[0]
-        # else:
-            self.screen = screens[0]
+        self.screen = screens(enablePrimaryScreen=True,
+                              usePrimaryScreenSize=True)
 
         self.window = MainWindow()
         self.window.winId()
-        self.window.windowHandle().setScreen(self.screen)
-        geo = self.screen.availableGeometry()
+        self.window.windowHandle().setScreen(self.screen.screen)
+        geo = self.screen.screen.availableGeometry()
         self.window.move(geo.x(), geo.y())
         self.window.resize(geo.width(), geo.height())
 

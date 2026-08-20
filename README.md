@@ -16,8 +16,9 @@ Wait to complete...
 
 ### Executable File Config File (.env)
 ```
-CONFIG_PATH=[the position of music config file]
-CONFIG_FILE=[music config file name]
+MUSIC_PATH=[the position of music config file]
+MUSIC_FILE=[music config file name]
+SCREEN_SCALE=[scale factor of the preview area, e.g. 0.75]
 ```
 
 ### Music Config File(*.json)
