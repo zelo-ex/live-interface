@@ -10,8 +10,7 @@ from gui.screens import screens
 class inner_source:
     def __init__(self, screen: screens):
         self.music_control = music_source(screen)
-        self.notice_control = notice_source(screen,
-            "Notice\r\nThis is a notice...")
+        self.notice_control = notice_source(screen)
 
         self.layout = QHBoxLayout()
         self.layout.addWidget(self.music_control.widget)
@@ -24,6 +23,6 @@ class inner_source:
         )
         
         self.music = music_player(self.music_control)
-        # self.music.setSourceAndPlay()
+        self.music.setSourceAndPlay()
         return
         

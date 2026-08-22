@@ -1,6 +1,7 @@
-from PySide6.QtCore import QUrl
+from PySide6.QtCore import QUrl, Slot
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 from gui.controls.innerSource.music_source import music_source
+from services.signals import signal_bus
 
 class music_player:
     def __init__(self, audio_widget: music_source):
@@ -23,6 +24,8 @@ class music_player:
             self.update_media_status)
         self.player.errorOccurred.connect(
             self.handle_error)
+
+        signal_bus.music_source.connect(self.parse_signal)
 
         return
 
@@ -56,3 +59,17 @@ class music_player:
         self.player.setSource(QUrl.fromLocalFile(filename))
         print(filename)
         self.player.play()
+
+    @Slot(str, int)
+    def parse_signal(self, command: str, offset: int) -> None:
+        if (command == "prev"):
+            self.widget.playlist.move(-offset)
+            self.setSourceAndPlay()
+        elif (command == "next"):
+            self.widget.playlist.move(offset)
+            self.setSourceAndPlay()
+        elif (command == "play"): self.player.play()
+        elif (command == "pause"): self.player.pause()
+        elif (command == "restart"): self.player.setPosition(0)
+        else: print("error occur")
+        return

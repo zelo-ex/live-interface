@@ -6,23 +6,24 @@ from dotenv import load_dotenv
 from pathlib import Path
 
 class playlist:
-    _playlist_index = []
-    _playlist_ptr = 0
-    # range: 0~len(self._playlist_config)
-    _playlist_config = []
-
     def __init__(self):
+        self._playlist_index= []
+        self._playlist_ptr = 0
+        # range: 0~len(self._playlist_config)
+        self._playlist_config = []
+        
         playlist.load_config(self, self.parse_config_path())
         if not self._playlist_config:
             raise RuntimeError("Playlist config is empty or failed to load")
         self._playlist_index = [i for i in range(len(self._playlist_config))]
         random.shuffle(self._playlist_index)
 
-        print("Init player: ")
-        now_playlist = playlist.now_playlist(self)
-        print(f"playlist have {now_playlist[1]} music.")
-        now_song = playlist.now_song(self)
-        print(f"now play [{now_playlist[0]}, {now_song[1]}]: {now_song[0]}")
+        # print("Init player: ")
+        # now_playlist = playlist.now_playlist(self)
+        # print(f"playlist have {now_playlist[1]} music.")
+        # now_song = playlist.now_song(self)
+        # print(f"now play [{now_playlist[0]}, {now_song[1]}]: {now_song[0]}")
+
         return
 
     def parse_config_path(self) -> str:
@@ -66,13 +67,13 @@ class playlist:
     def now_playlist(self) -> Tuple[int, int]:
         return (self._playlist_ptr, len(self._playlist_config))
 
-    def move(self, offset: int):
+    def move(self, offset: int) -> None:
         total = len(self._playlist_config)
         if total == 0:
             return
         self._playlist_ptr += offset
         self._playlist_ptr %= total
-        now_playlist = playlist.now_playlist(self)
-        now_song = playlist.now_song(self)
-        print(f"now play [{now_playlist[0]}, {now_song[1]}]: {now_song[0]}")
+        # now_playlist = playlist.now_playlist(self)
+        # now_song = playlist.now_song(self)
+        # print(f"now play [{now_playlist[0]}, {now_song[1]}]: {now_song[0]}")
         return
