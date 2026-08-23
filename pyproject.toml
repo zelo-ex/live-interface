@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "blivedm",
     "dotenv>=0.9.9",
     "fastapi>=0.141.1",
     "obsws-python>=1.8.0",
@@ -14,3 +15,6 @@ dependencies = [
     "qasync>=0.28.0",
     "uvicorn>=0.52.4",
 ]
+
+[tool.uv.sources]
+blivedm = { git = "https://github.com/xfgryujk/blivedm.git", branch = "master" }

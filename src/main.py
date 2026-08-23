@@ -3,6 +3,7 @@ import os
 from gui.display import GUIDisplay
 from dotenv import load_dotenv
 from services.listener import app
+from services.danmaku import run_danmaku
 
 def isDigits(s: str) -> bool:
     try:
@@ -28,5 +29,11 @@ if __name__ == "__main__":
         daemon=True
     )
     server_thread.start()
+
+    danmaku_thread = threading.Thread(
+        target=run_danmaku,
+        daemon=True
+    )
+    danmaku_thread.start()
     
     gui.run()

@@ -3,6 +3,7 @@ import os
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QLabel, QVBoxLayout, QWidget, QFrame
 from PySide6.QtGui import QFont
+from dotenv import load_dotenv
 from gui.screens import screens
 
 notice_title_font_size = 24
@@ -32,6 +33,7 @@ class notice_label:
         return
 
     def source_change(self) -> None:
+        load_dotenv()
         self.file_path = os.getenv("NOTICE_FILE", "notice.txt")
         with open(self.file_path, mode="r") as file:
             self.file_data = file.read()

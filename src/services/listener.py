@@ -40,3 +40,20 @@ async def music(request: Request):
         "message": "unknown command"
     }
     
+@app.post("/api/event")
+async def event(request: Request):
+    events = [
+        "noticeReload",
+        "headerReload"
+    ]
+
+    json = await request.json()
+    event_name = json.get("eventName", "")
+    print(event_name)
+    if event_name in events:
+        signal_bus.event_source.emit(event_name)
+        return {"status": "ok"}
+    return {
+        "status": "error",
+        "message": f"unknown event: {event_name}"
+    }

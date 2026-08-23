@@ -23,6 +23,6 @@ class inner_source:
         )
         
         self.music = music_player(self.music_control)
-        self.music.setSourceAndPlay()
+        # self.music.setSourceAndPlay()
+
         return
-        

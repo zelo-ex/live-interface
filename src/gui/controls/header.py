@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+
 from gui.screens import screens
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (QLabel, QHBoxLayout)
@@ -8,7 +10,8 @@ import os
 class header:
     def __init__(self, screen: screens):
         header_height = int(os.getenv("HEADER_HEIGHT", default="30"))
-        self.widget = QLabel("Title")
+        header_content = os.getenv("HEADER_CONTENT", "title")
+        self.widget = QLabel(header_content)
         self.widget.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.widget.setFixedHeight(header_height)
         self.widget.setFont(QFont(
@@ -18,3 +21,9 @@ class header:
 
         self.layout = QHBoxLayout()
         self.layout.addWidget(self.widget)
+
+    def update_header(self):
+        load_dotenv()
+        header_content = os.getenv("HEADER_CONTENT", "")
+        self.widget.setText(header_content)
+        print(header_content)
