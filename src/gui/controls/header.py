@@ -1,4 +1,4 @@
-from dotenv import load_dotenv
+from dotenv import dotenv_values
 
 from gui.screens import screens
 from PySide6.QtCore import Qt
@@ -23,7 +23,9 @@ class header:
         self.layout.addWidget(self.widget)
 
     def update_header(self):
-        load_dotenv()
-        header_content = os.getenv("HEADER_CONTENT", "")
+        latest_dict = dotenv_values(".env")
+        header_content = latest_dict.get("HEADER_CONTENT")
+        if header_content is None:
+            header_content = "title"
         self.widget.setText(header_content)
         print(header_content)

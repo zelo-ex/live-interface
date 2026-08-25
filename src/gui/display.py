@@ -25,7 +25,7 @@ class GUIDisplay:
         self.window.windowHandle().setScreen(self.screen.screen)
         geo = self.screen.screen.availableGeometry()
         self.window.move(geo.x(), geo.y())
-        self.window.resize(geo.width(), geo.height())
+        self.window.resize(self.screen.window_size())
 
     def run(self):
         central = interface(self.screen)

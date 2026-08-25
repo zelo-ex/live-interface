@@ -2,8 +2,8 @@ from music.playlist import playlist
 from gui.screens import screens
 import math
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import (QLabel, QWidget, QVBoxLayout,
-                               QSlider, QStatusBar)
+from PySide6.QtWidgets import (QLabel, QWidget, QVBoxLayout)
+from PySide6.QtWidgets import QSlider
 from PySide6.QtMultimedia import QMediaPlayer
 
 class slide_bar(QSlider):
@@ -48,15 +48,17 @@ class slide_bar(QSlider):
         return
         
 
-class status_bar(QStatusBar):
+class status_bar:
     def __init__(self):
         super().__init__()
         self._duration = QLabel()
         self._status = QLabel()
         self._title = QLabel()
-        self.addWidget(self._duration, stretch=1)
-        self.addWidget(self._status, stretch=1)
-        self.addWidget(self._title, stretch=3)
+        self._title.setWordWrap(True)
+        self.layout = QVBoxLayout()
+        self.layout.addWidget(self._duration, stretch=1)
+        self.layout.addWidget(self._status, stretch=1)
+        self.layout.addWidget(self._title, stretch=3)
         return
 
     def set_progress(self, progress):
@@ -84,13 +86,13 @@ class music_source:
         
         self.layout = QVBoxLayout()
         self.layout.addWidget(self.progressBar)
-        self.layout.addWidget(self.statusTab)
+        self.layout.addLayout(self.statusTab.layout)
         self.layout.setAlignment(
             self.progressBar,
             Qt.AlignmentFlag.AlignBottom
         )
         self.layout.setAlignment(
-            self.statusTab,
+            self.statusTab.layout,
             Qt.AlignmentFlag.AlignBottom
         )
         
@@ -98,9 +100,9 @@ class music_source:
         self.widget.setLayout(self.layout)
         self.widget.setStyleSheet("background: #1f1f1f;")
         self.widget.setFixedSize(
-            math.ceil(screen.available_size().width() / 2),
-            screen.available_size().height() -
-            screen.preview_size().height()
+            screen.available_size().width() -
+            screen.preview_size().width(),
+            math.ceil(screen.available_size().height() / 6)
         )
         
         self.init_source()

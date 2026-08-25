@@ -1,21 +1,23 @@
 from .header import header
-from .inner_source import inner_source
-from .outer_source import outer_source
+from .preview_source import preview_source
+from .plugins_source import plugins_source
 from gui.screens import screens
 from services.signals import signal_bus
-from PySide6.QtWidgets import (QWidget, QVBoxLayout)
+from PySide6.QtWidgets import (QHBoxLayout, QWidget, QVBoxLayout)
 from PySide6.QtCore import Slot
 
 class interface:
     def __init__(self, screen: screens):
         self.title_cls = header(screen)
-        self.outer_source_cls = outer_source(screen)
-        self.inner_source_cls = inner_source(screen)
+        self.preview_cls = preview_source(screen)
+        self.plugins_cls = plugins_source(screen)
         
         self.layout = QVBoxLayout()
         self.layout.addLayout(self.title_cls.layout)
-        self.layout.addLayout(self.outer_source_cls.layout)
-        self.layout.addLayout(self.inner_source_cls.layout)
+        self.mainLayout = QHBoxLayout()
+        self.mainLayout.addLayout(self.preview_cls.layout)
+        self.mainLayout.addLayout(self.plugins_cls.layout)
+        self.layout.addLayout(self.mainLayout)
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.layout.setSpacing(0)
         
@@ -29,7 +31,10 @@ class interface:
     @Slot(str)
     def event_apply(self, event: str):
         if event == "noticeReload":
-            self.inner_source_cls.notice_control.notice_label.source_change()
+            self.plugins_cls.notice_control.notice_label.load_source()
+            self.plugins_cls.notice_control.notice_label.source_change()
         elif event == "headerReload":
             self.title_cls.update_header()
+        elif event == "switchScene":
+            self.preview_cls.switch_scene()
         return

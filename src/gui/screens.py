@@ -1,3 +1,5 @@
+from typing import List
+
 from PySide6.QtGui import QGuiApplication
 from PySide6.QtCore import QSize
 from PySide6.QtWidgets import QApplication
@@ -7,6 +9,8 @@ import math
 class screens:
     def __init__(self, enablePrimaryScreen: bool,
                  usePrimaryScreenSize: bool):
+        self.radioViewerSize: List[float] = [16.0, 9.0]
+        
         self.screens = QApplication.screens()
         self.usePrimaryScreenSize = usePrimaryScreenSize
 
@@ -22,14 +26,30 @@ class screens:
             self.screen = self.screens[0]
         return
 
+    # 主屏幕标准大小
     def standard_size(self) -> QSize:
         return QGuiApplication.primaryScreen().size()
 
+    # 直播界面窗口大小
     def window_size(self) -> QSize:
+        size = QSize()
         if self.usePrimaryScreenSize:
-            return self.standard_size()
-        return self.screen.size()
+            size = self.standard_size()
+        else:
+            size = self.screen.size()
+        # size.setWidth(
+        #     math.ceil(size.height() /
+        #         self.radioViewerSize[1] *
+        #         self.radioViewerSize[0])
+        # )
+        size.setHeight(
+            math.ceil(size.width() /
+                      self.radioViewerSize[0] *
+                      self.radioViewerSize[1])
+        )
+        return size
 
+    # 窗口可用大小（排除标题栏的可用空间）
     def available_size(self) -> QSize:
         header_height = int(os.getenv("HEADER_HEIGHT", default="30"))
         window_size = self.window_size()
@@ -39,11 +59,10 @@ class screens:
         )
 
     def preview_size(self) -> QSize:
-        screen_scale = float(os.getenv("SCREEN_SCALE", default="1.0"))
-        standard_size = self.standard_size()
-        return QSize (
-            math.ceil(screen_scale * standard_size.width()),
-            math.ceil(screen_scale * standard_size.height())
+        scale = self.available_size().height() / self.standard_size().height()
+        return QSize(
+            math.ceil(self.standard_size().width() * scale),
+            math.ceil(self.standard_size().height() * scale)
         )
 
     def pt_to_px(self, pt: float) -> float:

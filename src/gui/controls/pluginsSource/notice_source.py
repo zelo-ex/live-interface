@@ -1,9 +1,8 @@
 import math
-import os
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QLabel, QVBoxLayout, QWidget, QFrame
 from PySide6.QtGui import QFont
-from dotenv import load_dotenv
+from dotenv import dotenv_values
 from gui.screens import screens
 
 notice_title_font_size = 24
@@ -23,20 +22,27 @@ class notice_title:
 
 class notice_label:
     def __init__(self, screen: screens):
-        self.source_change()
+        self.load_source()
         
         self.widget = QLabel(self.file_data)
+        self.widget.setWordWrap(True)
         self.widget.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.widget.setFont(QFont(
             "Noto Serif",
             int(screen.px_to_pt(notice_label_font_size))))
         return
 
-    def source_change(self) -> None:
-        load_dotenv()
-        self.file_path = os.getenv("NOTICE_FILE", "notice.txt")
+    def load_source(self) -> None:
+        lastest_dict = dotenv_values(".env")
+        self.file_path = lastest_dict.get("NOTICE_FILE")
+        if self.file_path is None:
+            self.file_path = "notice.txt"
         with open(self.file_path, mode="r") as file:
             self.file_data = file.read()
+        return
+
+    def source_change(self) -> None:
+        self.widget.setText(self.file_data)
         return
 
 class notice_source:
@@ -49,7 +55,6 @@ class notice_source:
         self.splitter.setStyleSheet("color: #6f6f6f;")
         self.splitter.setLineWidth(2)
         
-        
         self.layout = QVBoxLayout()
         self.layout.addWidget(self.notice_title.widget)
         self.layout.addWidget(self.splitter)
@@ -59,7 +64,7 @@ class notice_source:
         self.widget.setLayout(self.layout)
         self.widget.setStyleSheet("background: #1f1f1f;")
         self.widget.setFixedSize(
-            math.ceil(screen.available_size().width() / 2),
-            math.ceil(screen.available_size().height() -
-                      screen.preview_size().height())
+            screen.available_size().width() -
+            screen.preview_size().width(),
+            math.ceil(screen.available_size().height() / 3)
         )

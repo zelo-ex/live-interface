@@ -30,10 +30,10 @@ if __name__ == "__main__":
     )
     server_thread.start()
 
-    danmaku_thread = threading.Thread(
-        target=run_danmaku,
-        daemon=True
-    )
-    danmaku_thread.start()
+    # danmaku_thread = threading.Thread(
+    #     target=run_danmaku,
+    #     daemon=True
+    # )
+    # danmaku_thread.start()
     
     gui.run()

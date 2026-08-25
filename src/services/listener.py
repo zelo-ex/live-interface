@@ -13,9 +13,8 @@ app = FastAPI()
 @app.post("/api/danmaku")
 async def danmaku(request: Request):
     json = await request.json()
-    user = json.get("user", "")
     msg = json.get("msg", "")
-    signal_bus.danmaku_source.emit(user, msg)
+    signal_bus.danmaku_source.emit("[local]", msg)
     return {"status": "ok"}
 
 @app.post("/api/music")
@@ -44,7 +43,8 @@ async def music(request: Request):
 async def event(request: Request):
     events = [
         "noticeReload",
-        "headerReload"
+        "headerReload",
+        "switchScene"
     ]
 
     json = await request.json()

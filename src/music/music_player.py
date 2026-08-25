@@ -1,6 +1,6 @@
 from PySide6.QtCore import QUrl, Slot
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
-from gui.controls.innerSource.music_source import music_source
+from gui.controls.pluginsSource.music_source import music_source
 from services.signals import signal_bus
 
 class music_player:
