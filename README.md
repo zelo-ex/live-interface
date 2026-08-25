@@ -7,9 +7,9 @@ Used as an OBS live streaming interface while pracitcing Python.
 ## Project Architecture
 ```
 UI Surface: PySide6
-Sound Support: pygame
-OBS Support: obsws-python
-Wait to complete...
+Sound Support: PySide6
+Video Support: PySide6
+Danmaku Support: blivedm
 ```
 
 ## Config File
@@ -18,7 +18,12 @@ Wait to complete...
 ```
 MUSIC_PATH=[the position of music config file]
 MUSIC_FILE=[music config file name]
-SCREEN_SCALE=[scale factor of the preview area, e.g. 0.75]
+NOTICE_FILE=[the notice file to be read]
+SCREEN_SCALE=[preview to home screen ratio]
+HEADER_HEIGHT=[height of the title (in px)]
+SERVICE_PORT=[HTTP server port]
+LIVE_ID=[listened live room id]
+LIVE_SESSDATA=[SESSDATA ley in cookies]
 ```
 
 ### Music Config File(*.json)
@@ -32,3 +37,16 @@ SCREEN_SCALE=[scale factor of the preview area, e.g. 0.75]
 	...
 ]
 ```
+
+### Usage
+
+1. Clone project source code and run build script
+``` sh
+git clone --depth=1 https://codeberg.org/zelo-ex/live-interface
+cd ./live-interface
+./build.sh
+```
+
+2. Copy `src/.env_example` to the directory where the live_interface executable is located.
+
+3. Set up your environment and rename `.env_example` to `.env`.
